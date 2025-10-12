@@ -1,12 +1,14 @@
 use axum::{Router, routing::get};
+use database::envs;
 
 #[tokio::main]
 async fn main() {
     // build app and add single route
     let app = Router::new().route("/", get(|| async { "Hello World!" }));
 
-    // run the app with hyper
-    println!("Now Listening on port localhost:9999...");
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:9999").await.unwrap();
+    let address = envs::db_address();
+    let port = envs::db_port();
+    println!("Now Listening on {address}:{port}...");
+    let listener = tokio::net::TcpListener::bind(format!("{address}:{port}")).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
