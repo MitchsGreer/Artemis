@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:14-alpine # Using a lightweight PostgreSQL image
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB} # Name of the database to create
+      POSTGRES_USER: ${POSTGRES_USER} # Username for the database
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # Password for the database user
+    ports:
+      - "${POSTGRES_PORT}:5432" # Map local host port:container port
+

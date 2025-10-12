@@ -2,12 +2,18 @@
 Artemis is a requirements management tool.
 
 ## Setup
-First set a password for the DB in a local `.env` file:
-```bash
-echo "POSTGRES_PASSWORD='password'" > .env
-```
 
-## Running the Application
+1. Modify any passwords or variables in the local `.env` file.
+2. Run the following command to start the database
+```bash
+docker-compose up     # run in current terminal
+docker-compose up -d  # run in detached/headless mode
+
+
+# or for newer versions of docker
+docker compose up
+```
+3. Start the server application
 ```bash
 # build the entire application
 cargo build
