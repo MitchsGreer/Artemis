@@ -16,28 +16,28 @@ what a requirement should contain to be considered complete.
 
 ## Connection Example
 
-:::mermaid
+```mermaid
 flowchart LR
 
 subgraph S1
-R1_S1
-R2_S1
-R3_S1
-R4_S1
+    R1_S1
+    R2_S1
+    R3_S1
+    R4_S1
 end
 
 subgraph S2
-R1_S2
-R2_S2
-R3_S2
-R4_S2
+    R1_S2
+    R2_S2
+    R3_S2
+    R4_S2
 end
 
 subgraph S3
-R1_S3
-R2_S3
-R3_S3
-R4_S3
+    R1_S3
+    R2_S3
+    R3_S3
+    R4_S3
 end
 
 R1_S1 --> S2;
@@ -45,4 +45,4 @@ R2_S1 --> R1_S3;
 R2_S1 --> R2_S3;
 R4_S1 --> R3_S3;
 R3_S3 --> R4_S3;
-:::
+```
