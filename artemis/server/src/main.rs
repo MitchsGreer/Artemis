@@ -3,11 +3,15 @@ use axum::extract::Path;
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use database::envs;
-use utoipa::ToSchema;
+use utoipa::{OpenApi, ToSchema};
 use serde::{Deserialize, Serialize};
+
+const OPEN_API_SPEC_PATH: &str = "../../open_api_spec.yaml";
 
 #[tokio::main]
 async fn main() {
+    save_spec_updates();
+
     // build app and add single route
     let app = Router::new()
         .route("/", get(|| async { "Hello World!" }))
@@ -20,6 +24,29 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(format!("{address}:{port}")).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
+
+pub fn save_spec_updates() {
+    let spec_yaml = ApiDoc::openapi()
+        .to_yaml()
+        .expect("Failed to convert server code to yaml spec.");
+    std::fs::write(OPEN_API_SPEC_PATH, spec_yaml)
+        .expect("Failed to save open api spec.");
+    println!("Updated OpenApi spec at {OPEN_API_SPEC_PATH}");
+}
+
+#[derive(OpenApi)]
+#[openapi(
+    paths(list_projects, post_project, get_project, delete_project),
+    components(
+        schemas(UserId, ProjectDetails, ProjectStatus),
+    ),
+    info(
+        title = "Server API",
+        version = "1.0.0",
+        description = "Server-side Project and Requirements API"
+    ),
+)]
+struct ApiDoc;
 
 #[derive(ToSchema, Serialize, Deserialize, Debug)]
 struct UserId(u64);
@@ -90,11 +117,12 @@ async fn get_project(Path(id): Path<UserId>) -> impl IntoResponse {
     delete,
     path = "/projects/{id}",
     params(
-        ("id" = UserId, Path, description = "The unique identifier of the project to retrieve."),
+        ("id" = UserId, Path, description = "The unique identifier of the project to delete."),
     ),
     responses(
         (status = 204, description = "Project was successfully deleted."),
         (status = 404, description = "Project not found."),
+        (status = 409, description = "Unable to delete project due to conflict."),
     ),
 )]
 async fn delete_project(Path(id): Path<UserId>) -> impl IntoResponse {
