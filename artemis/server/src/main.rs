@@ -15,8 +15,8 @@ async fn main() {
     // build app and add single route
     let app = Router::new()
         .route("/", get(|| async { "Hello World!" }))
-        .route("/projects", get(list_projects).post(post_project))
-        .route("/projects/{id}", get(get_project).delete(delete_project));
+        .route("/artemis/projects", get(list_projects).post(post_project))
+        .route("/artemis/projects/{id}", get(get_project).delete(delete_project));
 
     let address = envs::db_address();
     let port = envs::db_port();
@@ -41,7 +41,7 @@ pub fn save_spec_updates() {
         schemas(UserId, ProjectDetails, ProjectStatus),
     ),
     info(
-        title = "Server API",
+        title = "Artemis Server API",
         version = "1.0.0",
         description = "Server-side Project and Requirements API"
     ),
@@ -69,7 +69,7 @@ enum ProjectStatus {
 
 #[utoipa::path(
     get,
-    path = "/projects",
+    path = "/artemis/projects",
     responses(
         (status = 200, description = "Successfully listed projects.", body = Vec<ProjectDetails>),
     ),
@@ -82,7 +82,7 @@ async fn list_projects() -> impl IntoResponse {
 
 #[utoipa::path(
     post,
-    path = "/projects",
+    path = "/artemis/projects",
     responses(
         (status = 201, description = "Successfully created new project."),
     ),
@@ -94,7 +94,7 @@ async fn post_project() -> StatusCode {
 
 #[utoipa::path(
     get,
-    path = "/projects/{id}",
+    path = "/artemis/projects/{id}",
     params(
         ("id" = UserId, Path, description = "The unique identifier of the project to retrieve."),
     ),
@@ -115,7 +115,7 @@ async fn get_project(Path(id): Path<UserId>) -> impl IntoResponse {
 
 #[utoipa::path(
     delete,
-    path = "/projects/{id}",
+    path = "/artemis/projects/{id}",
     params(
         ("id" = UserId, Path, description = "The unique identifier of the project to delete."),
     ),
