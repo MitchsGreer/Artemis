@@ -38,7 +38,7 @@ pub fn save_spec_updates() {
 #[openapi(
     paths(list_projects, post_project, get_project, delete_project),
     components(
-        schemas(UserId, ProjectDetails, ProjectStatus),
+        schemas(ProjectId, ProjectDetails, ProjectStatus),
     ),
     info(
         title = "Artemis Server API",
@@ -49,11 +49,11 @@ pub fn save_spec_updates() {
 struct ApiDoc;
 
 #[derive(ToSchema, Serialize, Deserialize, Debug)]
-struct UserId(u64);
+struct ProjectId(u64);
 
 #[derive(ToSchema, Serialize)]
 struct ProjectDetails {
-    id: UserId,
+    id: ProjectId,
     title: String,
     status: ProjectStatus
 }
@@ -96,14 +96,14 @@ async fn post_project() -> StatusCode {
     get,
     path = "/artemis/projects/{id}",
     params(
-        ("id" = UserId, Path, description = "The unique identifier of the project to retrieve."),
+        ("id" = ProjectId, Path, description = "The unique identifier of the project to retrieve."),
     ),
     responses(
         (status = 200, description = "Project was successfully found.", body = ProjectDetails),
         (status = 404, description = "Project not found."),
     ),
 )]
-async fn get_project(Path(id): Path<UserId>) -> impl IntoResponse {
+async fn get_project(Path(id): Path<ProjectId>) -> impl IntoResponse {
     // TODO
     let project = ProjectDetails{
         id: id,
@@ -117,7 +117,7 @@ async fn get_project(Path(id): Path<UserId>) -> impl IntoResponse {
     delete,
     path = "/artemis/projects/{id}",
     params(
-        ("id" = UserId, Path, description = "The unique identifier of the project to delete."),
+        ("id" = ProjectId, Path, description = "The unique identifier of the project to delete."),
     ),
     responses(
         (status = 204, description = "Project was successfully deleted."),
@@ -125,7 +125,7 @@ async fn get_project(Path(id): Path<UserId>) -> impl IntoResponse {
         (status = 409, description = "Unable to delete project due to conflict."),
     ),
 )]
-async fn delete_project(Path(id): Path<UserId>) -> impl IntoResponse {
+async fn delete_project(Path(id): Path<ProjectId>) -> impl IntoResponse {
     // TODO
     println!("Deleting id:{:?}", id);
     StatusCode::NO_CONTENT
