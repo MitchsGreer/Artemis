@@ -8,3 +8,5 @@ database = { path = "../database" }
 axum = "0.8.6"
 tokio = { version = "1.47.1", features = ["full"] }
 tower = "0.5.2"
+utoipa = "5.4.0"
+serde = { version = "1.0.228", features = ["derive"] }
