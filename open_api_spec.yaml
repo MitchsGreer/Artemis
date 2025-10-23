@@ -1,12 +1,12 @@
 openapi: 3.1.0
 info:
-  title: Server API
+  title: Artemis Server API
   description: Server-side Project and Requirements API
   license:
     name: ''
   version: 1.0.0
 paths:
-  /projects:
+  /artemis/projects:
     get:
       tags: []
       operationId: list_projects
@@ -25,7 +25,7 @@ paths:
       responses:
         '201':
           description: Successfully created new project.
-  /projects/{id}:
+  /artemis/projects/{id}:
     get:
       tags: []
       operationId: get_project
