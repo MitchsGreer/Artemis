@@ -3,7 +3,8 @@ info:
   title: Artemis Server API
   description: Server-side Project and Requirements API
   license:
-    name: ''
+    name: MIT
+    url: https://opensource.org/licenses/MIT
   version: 1.0.0
 paths:
   /artemis/projects:
@@ -62,8 +63,77 @@ paths:
           description: Project not found.
         '409':
           description: Unable to delete project due to conflict.
+  /artemis/requirements:
+    get:
+      tags: []
+      operationId: list_requirements
+      parameters:
+      - name: projectId
+        in: query
+        description: The unique identifier of the project to retrieve all requirements for.
+        required: true
+        schema:
+          $ref: '#/components/schemas/ProjectId'
+      responses:
+        '200':
+          description: Successfully listed requirements.
+    post:
+      tags: []
+      operationId: post_requirement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRequirementDetails'
+        required: true
+      responses:
+        '201':
+          description: Successfully created new requirement.
+  /artemis/requirements/{id}:
+    get:
+      tags: []
+      operationId: get_requirement
+      parameters:
+      - name: id
+        in: path
+        description: RequirementId to retrieve details for.
+        required: true
+        schema:
+          $ref: '#/components/schemas/RequirementId'
+      responses:
+        '200':
+          description: Successfully retrieved requirement.
+        '404':
+          description: Requirement not found.
+    delete:
+      tags: []
+      operationId: delete_requirement
+      parameters:
+      - name: id
+        in: path
+        description: RequirementId to delete.
+        required: true
+        schema:
+          $ref: '#/components/schemas/RequirementId'
+      responses:
+        '204':
+          description: Requirement was successfully deleted.
+        '404':
+          description: Requirement not found.
+        '409':
+          description: Unable to delete requirment due to conflict.
 components:
   schemas:
+    CreateRequirementDetails:
+      type: object
+      required:
+      - project_id
+      - description
+      properties:
+        description:
+          type: string
+        project_id:
+          $ref: '#/components/schemas/ProjectId'
     ProjectDetails:
       type: object
       required:
@@ -88,3 +158,20 @@ components:
       - InProgress
       - InValidation
       - Complete
+    Requirement:
+      type: object
+      required:
+      - id
+      - project_id
+      - description
+      properties:
+        description:
+          type: string
+        id:
+          $ref: '#/components/schemas/RequirementId'
+        project_id:
+          $ref: '#/components/schemas/ProjectId'
+    RequirementId:
+      type: integer
+      format: int64
+      minimum: 0

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 #[derive(ToSchema, Serialize, Deserialize, Debug)]
-pub struct ProjectId(u64);
+pub struct ProjectId(pub u64);
 
 #[derive(ToSchema, Serialize)]
 pub struct ProjectDetails {
