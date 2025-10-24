@@ -1,8 +1,7 @@
 mod api;
 
-use database::envs;
 use api::openapi::update_api_spec;
-
+use database::envs;
 
 #[tokio::main]
 async fn main() {
@@ -13,6 +12,8 @@ async fn main() {
     let address = envs::db_address();
     let port = envs::db_port();
     println!("Now Listening on {address}:{port}...");
-    let listener = tokio::net::TcpListener::bind(format!("{address}:{port}")).await.unwrap();
+    let listener = tokio::net::TcpListener::bind(format!("{address}:{port}"))
+        .await
+        .unwrap();
     axum::serve(listener, app).await.unwrap();
 }

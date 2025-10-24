@@ -8,7 +8,7 @@ pub struct ProjectId(u64);
 pub struct ProjectDetails {
     pub id: ProjectId,
     pub title: String,
-    pub status: ProjectStatus
+    pub status: ProjectStatus,
 }
 
 #[derive(ToSchema, Serialize)]
@@ -17,6 +17,5 @@ pub enum ProjectStatus {
     Todo,
     InProgress,
     InValidation,
-    Complete
+    Complete,
 }
-

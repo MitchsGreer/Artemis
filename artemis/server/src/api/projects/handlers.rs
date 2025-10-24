@@ -1,8 +1,8 @@
+use super::models::*;
+use axum::Json;
 use axum::extract::Path;
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::IntoResponse;
-use super::models::*;
 
 #[utoipa::path(
     get,
@@ -42,7 +42,7 @@ pub async fn post_project() -> StatusCode {
 )]
 pub async fn get_project(Path(id): Path<ProjectId>) -> impl IntoResponse {
     // TODO
-    let project = ProjectDetails{
+    let project = ProjectDetails {
         id: id,
         title: String::from("test"),
         status: ProjectStatus::Todo,
