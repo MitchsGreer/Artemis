@@ -1,0 +1,90 @@
+openapi: 3.1.0
+info:
+  title: Artemis Server API
+  description: Server-side Project and Requirements API
+  license:
+    name: ''
+  version: 1.0.0
+paths:
+  /artemis/projects:
+    get:
+      tags: []
+      operationId: list_projects
+      responses:
+        '200':
+          description: Successfully listed projects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectDetails'
+    post:
+      tags: []
+      operationId: post_project
+      responses:
+        '201':
+          description: Successfully created new project.
+  /artemis/projects/{id}:
+    get:
+      tags: []
+      operationId: get_project
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the project to retrieve.
+        required: true
+        schema:
+          $ref: '#/components/schemas/ProjectId'
+      responses:
+        '200':
+          description: Project was successfully found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectDetails'
+        '404':
+          description: Project not found.
+    delete:
+      tags: []
+      operationId: delete_project
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the project to delete.
+        required: true
+        schema:
+          $ref: '#/components/schemas/ProjectId'
+      responses:
+        '204':
+          description: Project was successfully deleted.
+        '404':
+          description: Project not found.
+        '409':
+          description: Unable to delete project due to conflict.
+components:
+  schemas:
+    ProjectDetails:
+      type: object
+      required:
+      - id
+      - title
+      - status
+      properties:
+        id:
+          $ref: '#/components/schemas/ProjectId'
+        status:
+          $ref: '#/components/schemas/ProjectStatus'
+        title:
+          type: string
+    ProjectId:
+      type: integer
+      format: int64
+      minimum: 0
+    ProjectStatus:
+      type: string
+      enum:
+      - Todo
+      - InProgress
+      - InValidation
+      - Complete
