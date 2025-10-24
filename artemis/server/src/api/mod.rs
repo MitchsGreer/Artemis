@@ -3,6 +3,7 @@ use axum::routing::get;
 
 pub mod openapi;
 mod projects;
+mod requirements;
 
 pub fn create_app() -> Router {
     Router::new()
@@ -15,5 +16,14 @@ pub fn create_app() -> Router {
             "/artemis/projects/{id}",
             get(projects::handlers::get_project).delete(projects::handlers::delete_project),
         )
+        .route(
+            "/artemis/requirements",
+            get(requirements::handlers::list_requirements)
+                .post(requirements::handlers::post_requirement),
+        )
+        .route(
+            "/artemis/requirements/{id}",
+            get(requirements::handlers::get_requirement)
+                .delete(requirements::handlers::delete_requirement),
+        )
 }
-

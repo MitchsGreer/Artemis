@@ -1,5 +1,4 @@
 use super::models::*;
-use axum::Json;
 use axum::extract::Path;
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
@@ -14,7 +13,7 @@ use axum::response::IntoResponse;
 pub async fn list_projects() -> impl IntoResponse {
     // TODO
     let projects: Vec<ProjectDetails> = vec![];
-    Json(projects)
+    axum::Json(projects)
 }
 
 #[utoipa::path(
@@ -26,7 +25,7 @@ pub async fn list_projects() -> impl IntoResponse {
 )]
 pub async fn post_project() -> StatusCode {
     // TODO
-    StatusCode::CREATED
+    StatusCode::NOT_IMPLEMENTED
 }
 
 #[utoipa::path(
@@ -47,7 +46,7 @@ pub async fn get_project(Path(id): Path<ProjectId>) -> impl IntoResponse {
         title: String::from("test"),
         status: ProjectStatus::Todo,
     };
-    Json(project)
+    axum::Json(project)
 }
 
 #[utoipa::path(
@@ -65,5 +64,5 @@ pub async fn get_project(Path(id): Path<ProjectId>) -> impl IntoResponse {
 pub async fn delete_project(Path(id): Path<ProjectId>) -> impl IntoResponse {
     // TODO
     println!("Deleting id:{:?}", id);
-    StatusCode::NO_CONTENT
+    StatusCode::NOT_IMPLEMENTED
 }
